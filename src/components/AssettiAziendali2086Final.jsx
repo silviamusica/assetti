@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import html2pdf from 'html2pdf.js';
 import { ChevronRight, ChevronLeft, AlertTriangle, CheckCircle, XCircle, Lock, FileText, Building2, Users, Calculator, TrendingUp, Heart, Clock, Target, AlertCircle, Printer, AlertOctagon, Ban, Euro, Shield, Calendar, Phone } from 'lucide-react';
 
 // ==================== DOMANDE ====================
@@ -325,15 +324,10 @@ export default function AssettiAziendali2086Final() {
       alert('Report non disponibile');
       return;
     }
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: `Report_2086_${companyData.name?.replace(/[^a-zA-Z0-9]/g, '_') || 'azienda'}_${new Date().toISOString().split('T')[0]}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-    html2pdf().set(opt).from(reportRef.current).save();
+
+    // Usa la funzionalità di stampa nativa del browser
+    // che gestisce automaticamente le interruzioni di pagina
+    window.print();
   };
   const totalSteps = Math.ceil(questions.length / 4) + 1;
 
@@ -925,7 +919,7 @@ export default function AssettiAziendali2086Final() {
           <p className="text-gray-700 mb-4">Alla fine delle valutazioni si esprimono i seguenti giudizi:</p>
 
           {/* ORGANIZZAZIONE */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-blue-600 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><Building2 className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA DELL'ORGANIZZAZIONE</h3></div><span className="text-2xl font-bold">{percentages.organizzazione}%</span></div>
             <div className="p-4 space-y-4">
               {[{ title: 'Area della preparazione del soggetto economico', data: getAreaPreparazione() }, { title: 'Area del posizionamento strategico dell\'azienda', data: getAreaPosizionamento() }, { title: 'Area dei professionisti esterni', data: getAreaProfessionisti() }].map((area, idx) => (
@@ -939,7 +933,7 @@ export default function AssettiAziendali2086Final() {
           </div>
 
           {/* PROCESSI */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-purple-600 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><Users className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA DEI PROCESSI</h3></div><span className="text-2xl font-bold">{percentages.processi}%</span></div>
             <div className="p-4 space-y-4">
               {[{ title: 'Area dell\'organizzazione e governo dei processi', data: getAreaProcessi() }, { title: 'Area della copertura dei rischi', data: getAreaRischi() }, { title: 'Area dell\'adeguatezza economica dell\'organigramma', data: getAreaAdeguatezzaEconomica() }].map((area, idx) => (
@@ -953,7 +947,7 @@ export default function AssettiAziendali2086Final() {
           </div>
 
           {/* AMMINISTRAZIONE */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-green-600 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><Calculator className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA DELL'AMMINISTRAZIONE</h3></div><span className="text-2xl font-bold">{percentages.amministrazione}%</span></div>
             <div className="p-4 space-y-4">
               {[{ title: 'Area della tempestività di rilevamento e di analisi', data: getAreaTempestivita() }, { title: 'Area della consapevolezza degli equilibri economico-finanziari', data: getAreaEquilibri() }].map((area, idx) => (
@@ -967,7 +961,7 @@ export default function AssettiAziendali2086Final() {
           </div>
 
           {/* FORMAZIONE */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-orange-500 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><TrendingUp className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA FORMAZIONE, INNOVAZIONE E CLIMA</h3></div><span className="text-2xl font-bold">{percentages.formazione}%</span></div>
             <div className="p-4 space-y-4">
               {[{ title: 'Area della formazione', data: getAreaFormazione() }, { title: 'Area dell\'innovazione', data: getAreaInnovazione() }, { title: 'Area del clima aziendale', data: getAreaClima() }].map((area, idx) => (
@@ -981,7 +975,7 @@ export default function AssettiAziendali2086Final() {
           </div>
 
           {/* CLIENTI */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-pink-500 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><Heart className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA DEI CLIENTI</h3></div><span className="text-2xl font-bold">{percentages.clienti}%</span></div>
             <div className="p-4 space-y-4">
               {[{ title: 'Area della soddisfazione dei clienti', data: getAreaSoddisfazione() }, { title: 'Area del tracciamento clienti', data: getAreaTracciamento() }].map((area, idx) => (
@@ -995,7 +989,7 @@ export default function AssettiAziendali2086Final() {
           </div>
 
           {/* COMPLIANCE */}
-          <div className="mb-6 border rounded-lg overflow-hidden">
+          <div className="mb-8 border rounded-lg overflow-hidden">
             <div className="bg-indigo-600 text-white p-3 flex justify-between items-center"><div className="flex items-center gap-2"><Shield className="w-5 h-5" /><h3 className="font-bold">PROSPETTIVA COMPLIANCE NORMATIVA</h3></div><span className="text-2xl font-bold">{percentages.compliance}%</span></div>
             <div className="p-4">
               {(() => { const area = getAreaCompliance(); return (
@@ -1128,7 +1122,65 @@ export default function AssettiAziendali2086Final() {
         </div>
         <p className="text-center text-gray-500 text-xs mt-4 print:hidden">www.2086.it - Network Consulenti Aziendali d'Italia</p>
       </div>
-      <style>{`@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .print\\:hidden { display: none !important; } .print\\:break-before-page { break-before: page; } .print\\:break-after-page { break-after: page; } }`}</style>
+      <style>{`
+        @media print {
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+
+          body {
+            margin: 0;
+            padding: 0;
+          }
+
+          .print\\:hidden {
+            display: none !important;
+          }
+
+          /* Evita interruzioni dentro questi elementi */
+          .mb-8,
+          .border.rounded-lg {
+            page-break-inside: avoid;
+            break-inside: avoid;
+          }
+
+          /* Le intestazioni colorate non devono mai essere separate dal contenuto */
+          .bg-blue-600,
+          .bg-purple-600,
+          .bg-green-600,
+          .bg-orange-500,
+          .bg-pink-500,
+          .bg-indigo-600 {
+            page-break-after: avoid;
+            break-after: avoid;
+          }
+
+          /* Ogni sezione principale su nuova pagina */
+          .print\\:break-before-page {
+            page-break-before: always;
+            break-before: page;
+          }
+
+          /* Margini delle pagine */
+          @page {
+            margin: 15mm;
+            size: A4 portrait;
+          }
+
+          /* Evita orfani e vedove */
+          p, h1, h2, h3, h4, h5, h6 {
+            orphans: 3;
+            widows: 3;
+          }
+
+          h1, h2, h3, h4, h5, h6 {
+            page-break-after: avoid;
+            break-after: avoid;
+          }
+        }
+      `}</style>
     </div>
   );
 }
