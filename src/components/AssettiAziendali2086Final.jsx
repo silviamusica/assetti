@@ -329,6 +329,43 @@ export default function AssettiAziendali2086Final() {
     // che gestisce automaticamente le interruzioni di pagina
     window.print();
   };
+
+  const handleExportAnswers = () => {
+    // Crea un file di testo con domande e risposte
+    let content = `QUESTIONARIO ADEGUATI ASSETTI AZIENDALI - Art. 2086 c.c.\n`;
+    content += `Data: ${new Date().toLocaleDateString('it-IT')}\n`;
+    content += `\n${'='.repeat(80)}\n\n`;
+
+    questions.forEach((q, index) => {
+      const answer = answers[q.id];
+      if (answer) {
+        content += `${index + 1}. ${q.text}\n`;
+
+        // Trova l'opzione selezionata
+        const selectedOption = q.options.find(opt => opt.value === answer);
+        if (selectedOption) {
+          content += `   Risposta: ${selectedOption.label}\n`;
+        }
+
+        content += `\n`;
+      }
+    });
+
+    content += `${'='.repeat(80)}\n`;
+    content += `\nReport generato da www.2086.it - Network Consulenti Aziendali d'Italia\n`;
+
+    // Crea e scarica il file
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Risposte_2086_${companyData.name?.replace(/[^a-zA-Z0-9]/g, '_') || 'azienda'}_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
   const totalSteps = Math.ceil(questions.length / 4) + 1;
 
   // INTRO
@@ -344,6 +381,22 @@ export default function AssettiAziendali2086Final() {
       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
         <p className="text-sm text-blue-800">Questo strumento verifica l'adeguatezza degli assetti organizzativi, amministrativi e contabili, inclusi i <strong>segnali di crisi</strong> e la <strong>compliance normativa</strong>.</p>
       </div>
+
+      {/* INFORMATIVA PRIVACY */}
+      <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+        <div className="flex items-start gap-2">
+          <Shield className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h4 className="font-semibold text-green-800 mb-1">Informativa Privacy e Trattamento Dati</h4>
+            <p className="text-xs text-green-700">
+              In conformità al Regolamento UE 2016/679 (GDPR) e al D.Lgs. 196/2003, i dati inseriti in questo questionario sono utilizzati esclusivamente per l'elaborazione del report sugli adeguati assetti aziendali.
+              I dati <strong>non verranno condivisi con terzi</strong>, non verranno utilizzati per finalità di marketing e saranno trattati nel rispetto della massima riservatezza.
+              Il trattamento dei dati avviene in forma anonimizzata per l'analisi tecnica e professionale richiesta.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-4">
         <label className="block">
           <span className="text-gray-700 font-medium">Denominazione Sociale *</span>
@@ -1070,26 +1123,154 @@ export default function AssettiAziendali2086Final() {
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-purple-800 to-purple-600 text-white p-8 rounded-lg text-center">
         <Calendar className="w-16 h-16 mx-auto mb-4" />
-        <h1 className="text-2xl font-bold">Piano di Miglioramento Personalizzato</h1>
+        <h1 className="text-2xl font-bold">Richiedi il Report Completo e il Piano di Miglioramento</h1>
         <p className="text-purple-200 mt-2">{companyData.name}</p>
       </div>
-      <div className="bg-purple-50 border-2 border-purple-300 rounded-lg p-6">
-        <h2 className="font-bold text-purple-800 text-xl mb-4">🎯 Elaborazione Ad Hoc</h2>
-        <p className="text-purple-700 mb-4">Il Piano di Miglioramento sarà elaborato <strong>su misura per la tua azienda</strong> a seguito di una consulenza con i nostri esperti.</p>
-        <p className="text-purple-700 mb-4">Il piano includerà:</p>
-        <ul className="space-y-3 mb-6">
-          <li className="flex items-start gap-3 bg-red-100 p-3 rounded border-l-4 border-red-500"><AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" /><div><p className="font-bold text-red-800">Azioni Urgenti (7-15 giorni)</p><p className="text-sm text-gray-700">Interventi immediati per le criticità più gravi rilevate</p></div></li>
-          <li className="flex items-start gap-3 bg-orange-100 p-3 rounded border-l-4 border-orange-500"><Clock className="w-6 h-6 text-orange-600 flex-shrink-0" /><div><p className="font-bold text-orange-800">Azioni a Breve Termine (15-45 giorni)</p><p className="text-sm text-gray-700">Consolidamento degli assetti organizzativi e amministrativi</p></div></li>
-          <li className="flex items-start gap-3 bg-blue-100 p-3 rounded border-l-4 border-blue-500"><Target className="w-6 h-6 text-blue-600 flex-shrink-0" /><div><p className="font-bold text-blue-800">Azioni a Medio Termine (60+ giorni)</p><p className="text-sm text-gray-700">Ottimizzazione e raggiungimento della compliance completa</p></div></li>
-        </ul>
-        <p className="text-purple-800 font-medium mb-4">Il piano ti aiuterà ad essere in regola con gli adeguati assetti e a proteggere gli amministratori dalle responsabilità previste dall'art. 2476 sesto comma del Codice Civile.</p>
-        <div className="bg-white p-4 rounded-lg border border-purple-200">
-          <p className="font-bold text-purple-800 mb-2">📞 Contattaci per fissare un appuntamento:</p>
-          <p className="text-gray-700">Email: <strong>info@2086.it</strong></p>
-          <p className="text-gray-700">Tel: <strong>+39 XXX XXX XXXX</strong></p>
+
+      {/* INFORMATIVA PRIVACY */}
+      <div className="bg-green-50 border-2 border-green-500 rounded-lg p-5">
+        <div className="flex items-start gap-3">
+          <Shield className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+          <div>
+            <h3 className="font-bold text-green-800 mb-2">Tutela della Privacy</h3>
+            <p className="text-sm text-green-700 mb-2">
+              In conformità al Regolamento UE 2016/679 (GDPR) e al D.Lgs. 196/2003, garantiamo che:
+            </p>
+            <ul className="text-sm text-green-700 space-y-1 list-disc list-inside">
+              <li>I dati del questionario <strong>non verranno mai condivisi con terzi</strong></li>
+              <li>Non verranno utilizzati per finalità di marketing o comunicazioni commerciali</li>
+              <li>Saranno trattati nel rispetto della massima riservatezza professionale</li>
+              <li>Verranno utilizzati esclusivamente per l'elaborazione del report richiesto</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <button onClick={() => setViewMode('base')} className="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition">Torna al Report Base</button>
+
+      {/* STEP 1: SCARICA RISPOSTE */}
+      <div className="bg-blue-50 border-2 border-blue-400 rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">1</div>
+          <h3 className="font-bold text-blue-800 text-lg">Scarica il File con le Tue Risposte</h3>
+        </div>
+        <p className="text-sm text-blue-700 mb-4">
+          Scarica il file TXT contenente tutte le domande e le risposte del questionario.
+          Questo file sarà necessario per richiedere il report completo.
+        </p>
+        <button
+          onClick={handleExportAnswers}
+          className="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
+        >
+          <FileText className="w-5 h-5" />
+          Scarica Risposte (.txt)
+        </button>
+      </div>
+
+      {/* STEP 2: PAGAMENTO */}
+      <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-orange-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">2</div>
+          <h3 className="font-bold text-orange-800 text-lg">Effettua il Pagamento</h3>
+        </div>
+        <p className="text-sm text-orange-700 mb-4">
+          Per ricevere il <strong>Report Peritale Completo</strong> con analisi dettagliata e giudizio professionale,
+          effettua il pagamento tramite il link PayPal qui sotto.
+        </p>
+        <div className="bg-white p-4 rounded-lg border border-orange-300 mb-4">
+          <p className="text-sm font-semibold text-orange-800 mb-2">Link di Pagamento PayPal:</p>
+          <a
+            href="https://www.paypal.com/paypalme/TUOACCOUNT"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline text-sm break-all"
+          >
+            https://www.paypal.com/paypalme/TUOACCOUNT
+          </a>
+          <p className="text-xs text-gray-600 mt-2">* Sostituire con il link PayPal effettivo</p>
+        </div>
+      </div>
+
+      {/* STEP 3: INVIA EMAIL */}
+      <div className="bg-purple-50 border-2 border-purple-400 rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">3</div>
+          <h3 className="font-bold text-purple-800 text-lg">Invia la Richiesta via Email</h3>
+        </div>
+        <p className="text-sm text-purple-700 mb-4">
+          Una volta completato il pagamento, invia un'email con:
+        </p>
+        <ul className="text-sm text-purple-700 space-y-2 mb-4 list-disc list-inside">
+          <li>Il <strong>file TXT</strong> scaricato al punto 1</li>
+          <li>La <strong>ricevuta del pagamento</strong> PayPal</li>
+          <li>I tuoi <strong>dati di contatto</strong> (nome, email, telefono)</li>
+        </ul>
+        <div className="bg-white p-4 rounded-lg border border-purple-300">
+          <p className="text-sm font-semibold text-purple-800 mb-2">📧 Invia tutto a:</p>
+          <a
+            href="mailto:piero@pieropozzana.it?subject=Richiesta Report Completo - Adeguati Assetti 2086"
+            className="text-blue-600 hover:text-blue-800 font-bold text-lg"
+          >
+            piero@pieropozzana.it
+          </a>
+          <p className="text-xs text-gray-600 mt-3">
+            Riceverai il report completo entro 3-5 giorni lavorativi dall'invio della documentazione.
+          </p>
+        </div>
+      </div>
+
+      {/* PIANO MIGLIORAMENTO */}
+      <div className="bg-gradient-to-br from-purple-100 to-purple-50 border-2 border-purple-300 rounded-lg p-6">
+        <h2 className="font-bold text-purple-900 text-xl mb-4 flex items-center gap-2">
+          <Target className="w-6 h-6" />
+          Piano di Miglioramento Personalizzato
+        </h2>
+        <p className="text-purple-700 mb-4">
+          Oltre al report completo, possiamo elaborare per te un <strong>Piano di Miglioramento su misura</strong>
+          che include:
+        </p>
+        <ul className="space-y-3 mb-6">
+          <li className="flex items-start gap-3 bg-red-100 p-3 rounded border-l-4 border-red-500">
+            <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+            <div>
+              <p className="font-bold text-red-800">Azioni Urgenti (7-15 giorni)</p>
+              <p className="text-sm text-gray-700">Interventi immediati per le criticità più gravi</p>
+            </div>
+          </li>
+          <li className="flex items-start gap-3 bg-orange-100 p-3 rounded border-l-4 border-orange-500">
+            <Clock className="w-6 h-6 text-orange-600 flex-shrink-0" />
+            <div>
+              <p className="font-bold text-orange-800">Azioni a Breve Termine (15-45 giorni)</p>
+              <p className="text-sm text-gray-700">Consolidamento degli assetti aziendali</p>
+            </div>
+          </li>
+          <li className="flex items-start gap-3 bg-blue-100 p-3 rounded border-l-4 border-blue-500">
+            <Target className="w-6 h-6 text-blue-600 flex-shrink-0" />
+            <div>
+              <p className="font-bold text-blue-800">Azioni a Medio Termine (60+ giorni)</p>
+              <p className="text-sm text-gray-700">Compliance completa e ottimizzazione</p>
+            </div>
+          </li>
+        </ul>
+        <p className="text-sm text-purple-800 font-medium mb-4">
+          Il piano ti aiuterà a essere in regola con gli adeguati assetti e a proteggere gli amministratori
+          dalle responsabilità previste dall'art. 2476 sesto comma del Codice Civile.
+        </p>
+        <div className="bg-white p-4 rounded-lg border border-purple-300">
+          <p className="font-bold text-purple-800 mb-2">📞 Per maggiori informazioni contatta:</p>
+          <a
+            href="mailto:piero@pieropozzana.it"
+            className="text-blue-600 hover:text-blue-800 font-semibold"
+          >
+            piero@pieropozzana.it
+          </a>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setViewMode('base')}
+        className="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition font-semibold"
+      >
+        Torna al Report Base
+      </button>
     </div>
   );
 
