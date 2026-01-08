@@ -904,7 +904,7 @@ export default function AssettiAziendali2086Final() {
         </div>
 
         {/* GRAFICO RADAR */}
-        <div className="bg-white border-2 rounded-lg p-4 print:break-before-page flex flex-col items-center" style={{overflow: 'hidden'}}>
+        <div className="bg-white border-2 rounded-lg p-4 print:break-before-page print:break-inside-avoid flex flex-col items-center" style={{overflow: 'hidden'}}>
           <h3 className="text-lg font-bold text-center mb-4">ANALISI GRAFICA PER PROSPETTIVA</h3>
           <div style={{maxWidth: 260, width: '100%', margin: '0 auto', padding: 0}}>
             <RadarChart data={percentages} size={240} />
