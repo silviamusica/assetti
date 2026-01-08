@@ -239,6 +239,7 @@ export default function AssettiAziendali2086Final() {
   const [viewMode, setViewMode] = useState('base');
   const [keySequence, setKeySequence] = useState('');
   const [showPremiumPopup, setShowPremiumPopup] = useState(false);
+  const [showConsulenzaPopup, setShowConsulenzaPopup] = useState(false);
   const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
   const [tapCount, setTapCount] = useState(0);
   const [lastTapTime, setLastTapTime] = useState(0);
@@ -621,8 +622,8 @@ export default function AssettiAziendali2086Final() {
             <li>✓ Elaborazione ad hoc per la tua azienda</li>
             <li>✓ Modello delibera CdA/Amministratore Unico</li>
           </ul>
-          <button onClick={() => setViewMode('piano')} className="w-full bg-white text-purple-600 font-semibold py-3 px-4 rounded-lg hover:bg-purple-50 transition flex items-center justify-center gap-2">
-            <Phone className="w-5 h-5" />Fissa un Appuntamento
+          <button onClick={() => setShowConsulenzaPopup(true)} className="w-full bg-white text-purple-600 font-semibold py-3 px-4 rounded-lg hover:bg-purple-50 transition flex items-center justify-center gap-2">
+            <Phone className="w-5 h-5" />Richiedi Consulenza
           </button>
         </div>
       </div>
@@ -1408,16 +1409,30 @@ export default function AssettiAziendali2086Final() {
         }
       `}</style>
 
-      {/* POPUP MODALE PREMIUM */}
+      {/* POPUP MODALE REPORT PREMIUM */}
       {showPremiumPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" onClick={() => setShowPremiumPopup(false)}>
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white rounded-t-2xl">
               <h2 className="text-2xl font-bold mb-2">Report Peritale Completo</h2>
-              <p className="text-blue-100">Come ottenere l'analisi dettagliata professionale</p>
+              <p className="text-blue-100">Analisi professionale conforme agli standard di settore</p>
             </div>
 
             <div className="p-6 space-y-6">
+              {/* DESCRIZIONE */}
+              <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
+                <h3 className="font-bold text-blue-900 mb-2">Cosa Include il Report Professionale</h3>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>✓ Premessa e quadro normativo di riferimento (Art. 2086 c.c., D.Lgs. 14/2019)</li>
+                  <li>✓ Analisi dettagliata per ciascuna prospettiva aziendale</li>
+                  <li>✓ Riferimenti giurisprudenziali e dottrinali</li>
+                  <li>✓ Giudizio professionale motivato sull'adeguatezza degli assetti</li>
+                  <li>✓ Indicazioni operative per la compliance normativa</li>
+                </ul>
+              </div>
+
+              {/* PROCEDURA */}
+              <div className="space-y-4">
               {/* STEP 1 */}
               <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-5">
                 <div className="flex items-center gap-3 mb-3">
@@ -1502,6 +1517,7 @@ export default function AssettiAziendali2086Final() {
                   <li>Indicazioni per la compliance</li>
                 </ul>
               </div>
+              </div>
 
               {/* PRIVACY */}
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
@@ -1520,6 +1536,155 @@ export default function AssettiAziendali2086Final() {
                 className="w-full bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-700 transition"
               >
                 Ho Capito
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POPUP MODALE CONSULENZA */}
+      {showConsulenzaPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" onClick={() => setShowConsulenzaPopup(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-purple-600 to-purple-800 p-6 text-white rounded-t-2xl">
+              <h2 className="text-2xl font-bold mb-2">Consulenza Professionale</h2>
+              <p className="text-purple-100">Piano di Miglioramento Personalizzato per la Tua Azienda</p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* DESCRIZIONE SERVIZIO */}
+              <div className="bg-purple-50 border-l-4 border-purple-600 p-4 rounded">
+                <h3 className="font-bold text-purple-900 mb-3">In Cosa Consiste la Consulenza</h3>
+                <p className="text-sm text-purple-800 mb-3">
+                  Il nostro team di professionisti elabora un <strong>Piano di Miglioramento su misura</strong> per la vostra realtà aziendale,
+                  basato sui risultati del questionario e su un'analisi approfondita delle criticità rilevate.
+                </p>
+                <div className="space-y-2 text-sm text-purple-800">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold">Azioni Urgenti (7-15 giorni)</p>
+                      <p className="text-xs">Interventi immediati per le criticità più gravi emerse dal questionario</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold">Azioni a Breve Termine (15-45 giorni)</p>
+                      <p className="text-xs">Consolidamento degli assetti organizzativi, amministrativi e contabili</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Target className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-bold">Azioni a Medio Termine (60+ giorni)</p>
+                      <p className="text-xs">Ottimizzazione dei processi e compliance normativa completa</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* DELIVERABLE */}
+              <div className="bg-blue-50 border-2 border-blue-400 rounded-lg p-5">
+                <h3 className="font-bold text-blue-900 mb-3">Cosa Riceverai</h3>
+                <ul className="text-sm text-blue-800 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span>✓</span>
+                    <span>Piano operativo dettagliato con timeline e priorità</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>✓</span>
+                    <span>Modello di delibera per CdA o Amministratore Unico</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>✓</span>
+                    <span>Checklist operative per implementazione</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>✓</span>
+                    <span>Indicazioni su strumenti e metodologie (Balanced Scorecard)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>✓</span>
+                    <span>Supporto alla protezione degli amministratori (Art. 2476 c.c.)</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* IMPORTANTE */}
+              <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-4">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-yellow-900 mb-2">Prima di Contattarci</h4>
+                    <p className="text-sm text-yellow-800 mb-3">
+                      Per elaborare il piano personalizzato, è fondamentale disporre delle vostre risposte al questionario.
+                      <strong> Scaricate il file TXT con le risposte</strong> così non dovrete ricominciare da zero.
+                    </p>
+                    <button
+                      onClick={handleExportAnswers}
+                      className="w-full bg-yellow-600 text-white text-sm font-semibold py-2 px-3 rounded-lg hover:bg-yellow-700 transition flex items-center justify-center gap-2"
+                    >
+                      <FileText className="w-4 h-4" />
+                      Scarica File TXT Risposte
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* CONTATTI */}
+              <div className="bg-gradient-to-br from-purple-50 to-white border-2 border-purple-300 rounded-lg p-5">
+                <h3 className="font-bold text-purple-900 mb-3 flex items-center gap-2">
+                  <Phone className="w-5 h-5" />
+                  Come Richiedere la Consulenza
+                </h3>
+                <p className="text-sm text-purple-800 mb-4">
+                  Per fissare un appuntamento con i nostri consulenti e ricevere un preventivo personalizzato,
+                  contattateci ai seguenti recapiti:
+                </p>
+                <div className="space-y-3">
+                  <div className="bg-white p-4 rounded-lg border border-purple-300">
+                    <p className="text-xs text-purple-700 mb-1">Email</p>
+                    <a
+                      href="mailto:piero@pieropozzana.it?subject=Richiesta Consulenza - Piano Miglioramento Assetti Aziendali"
+                      className="text-blue-600 hover:text-blue-800 font-bold text-lg flex items-center gap-2"
+                    >
+                      📧 piero@pieropozzana.it
+                    </a>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg border border-purple-300">
+                    <p className="text-xs text-purple-700 mb-1">Telefono</p>
+                    <a
+                      href="tel:+39XXXXXXXXXX"
+                      className="text-blue-600 hover:text-blue-800 font-bold text-lg flex items-center gap-2"
+                    >
+                      📞 +39 XXX XXX XXXX
+                    </a>
+                    <p className="text-xs text-purple-600 mt-1">Orari: Lun-Ven 9:00-18:00</p>
+                  </div>
+                </div>
+                <p className="text-xs text-purple-700 mt-4">
+                  <strong>Nota:</strong> Allegate il file TXT con le vostre risposte per velocizzare l'analisi preliminare.
+                </p>
+              </div>
+
+              {/* PRIVACY */}
+              <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                <div className="flex items-start gap-2">
+                  <Shield className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-green-800">
+                    <strong>Riservatezza Professionale:</strong> Tutte le informazioni condivise saranno trattate con la massima
+                    riservatezza professionale nel rispetto del GDPR (Reg. UE 2016/679) e del segreto professionale.
+                  </p>
+                </div>
+              </div>
+
+              {/* PULSANTE CHIUDI */}
+              <button
+                onClick={() => setShowConsulenzaPopup(false)}
+                className="w-full bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-700 transition"
+              >
+                Chiudi
               </button>
             </div>
           </div>
