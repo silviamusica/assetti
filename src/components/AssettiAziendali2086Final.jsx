@@ -238,14 +238,18 @@ export default function AssettiAziendali2086Final() {
   const [showResults, setShowResults] = useState(false);
   const [viewMode, setViewMode] = useState('base');
   const [keySequence, setKeySequence] = useState('');
+  const [showPremiumPopup, setShowPremiumPopup] = useState(false);
+  const [isPremiumUnlocked, setIsPremiumUnlocked] = useState(false);
+  const [tapCount, setTapCount] = useState(0);
+  const [lastTapTime, setLastTapTime] = useState(0);
   const reportRef = useRef(null);
 
-  // Gestione combinazione tasti FGH
+  // Gestione combinazione tasti FGH e RTY
   React.useEffect(() => {
     const handleKeyPress = (e) => {
       const key = e.key.toLowerCase();
       const newSequence = keySequence + key;
-      
+
       if (newSequence.endsWith('fgh')) {
         // Compila automaticamente tutto
         const autoAnswers = {};
@@ -253,13 +257,13 @@ export default function AssettiAziendali2086Final() {
           // Scegli risposte casuali per varietà
           const optionIndex = idx % q.options.length;
           const option = q.options[optionIndex];
-          autoAnswers[q.id] = { 
-            value: option.value, 
-            score: option.score, 
-            crisis: option.crisis || false 
+          autoAnswers[q.id] = {
+            value: option.value,
+            score: option.score,
+            crisis: option.crisis || false
           };
         });
-        
+
         setCompanyData({
           name: 'Azienda Demo S.r.l.',
           sede: 'Via Roma 123, Milano (MI)',
@@ -269,6 +273,12 @@ export default function AssettiAziendali2086Final() {
         setShowResults(true);
         setViewMode('base');
         setKeySequence('');
+      } else if (newSequence.endsWith('rty')) {
+        // Sblocca report premium
+        setIsPremiumUnlocked(true);
+        setShowPremiumPopup(false);
+        setViewMode('premium');
+        setKeySequence('');
       } else {
         setKeySequence(newSequence.slice(-3)); // Mantieni solo ultimi 3 caratteri
       }
@@ -277,6 +287,37 @@ export default function AssettiAziendali2086Final() {
     window.addEventListener('keypress', handleKeyPress);
     return () => window.removeEventListener('keypress', handleKeyPress);
   }, [keySequence]);
+
+  // Gestione 7 tap consecutivi per mobile
+  const handleLogoTap = () => {
+    const now = Date.now();
+
+    // Reset se sono passati più di 2 secondi dall'ultimo tap
+    if (now - lastTapTime > 2000) {
+      setTapCount(1);
+    } else {
+      const newCount = tapCount + 1;
+      setTapCount(newCount);
+
+      if (newCount >= 7) {
+        // Sblocca report premium
+        setIsPremiumUnlocked(true);
+        setShowPremiumPopup(false);
+        setViewMode('premium');
+        setTapCount(0);
+      }
+    }
+
+    setLastTapTime(now);
+  };
+
+  const handlePremiumClick = () => {
+    if (isPremiumUnlocked) {
+      setViewMode('premium');
+    } else {
+      setShowPremiumPopup(true);
+    }
+  };
 
   const handleAnswer = (questionId, value, score, crisis = false) => {
     setAnswers(prev => ({ ...prev, [questionId]: { value, score, crisis } }));
@@ -564,7 +605,7 @@ export default function AssettiAziendali2086Final() {
             <li>✓ Riferimenti giurisprudenziali</li>
             <li>✓ Giudizio professionale motivato</li>
           </ul>
-          <button onClick={() => setViewMode('premium')} className="w-full bg-white text-blue-600 font-semibold py-3 px-4 rounded-lg hover:bg-blue-50 transition">
+          <button onClick={handlePremiumClick} className="w-full bg-white text-blue-600 font-semibold py-3 px-4 rounded-lg hover:bg-blue-50 transition">
             Visualizza Report Peritale Completo
           </button>
         </div>
@@ -1279,7 +1320,7 @@ export default function AssettiAziendali2086Final() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 p-4 print:p-0 print:bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden print:shadow-none print:rounded-none">
-          <div className="bg-gradient-to-r from-blue-800 to-blue-600 p-4 text-white print:hidden">
+          <div className="bg-gradient-to-r from-blue-800 to-blue-600 p-4 text-white print:hidden" onClick={handleLogoTap} style={{cursor: 'pointer', userSelect: 'none'}}>
             <h1 className="text-xl font-bold text-center">ADEGUATI ASSETTI AZIENDALI 2086</h1>
             <p className="text-center text-blue-100 text-sm">Art. 2086 c.c. - D.Lgs. 14/2019 - Compliance</p>
           </div>
@@ -1362,6 +1403,105 @@ export default function AssettiAziendali2086Final() {
           }
         }
       `}</style>
+
+      {/* POPUP MODALE PREMIUM */}
+      {showPremiumPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" onClick={() => setShowPremiumPopup(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white rounded-t-2xl">
+              <h2 className="text-2xl font-bold mb-2">Report Peritale Completo</h2>
+              <p className="text-blue-100">Come ottenere l'analisi dettagliata professionale</p>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* STEP 1 */}
+              <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-orange-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">1</div>
+                  <h3 className="font-bold text-orange-900 text-lg">Effettua il Pagamento</h3>
+                </div>
+                <p className="text-sm text-orange-800 mb-3">
+                  Pagamento di <strong className="text-xl">300€</strong> tramite PayPal
+                </p>
+                <div className="bg-white p-4 rounded-lg border border-orange-300 mb-3">
+                  <p className="text-sm font-semibold text-orange-800 mb-2">Link PayPal:</p>
+                  <a
+                    href="https://www.paypal.com/paypalme/TUOACCOUNT"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 underline text-sm break-all font-semibold"
+                  >
+                    https://www.paypal.com/paypalme/TUOACCOUNT
+                  </a>
+                </div>
+                <p className="text-xs text-orange-700 font-medium">
+                  ⚠️ Indica nella causale: <strong>"Report Adeguati Assetti - [Nome Cognome / Nome Impresa]"</strong>
+                </p>
+              </div>
+
+              {/* STEP 2 */}
+              <div className="bg-purple-50 border-2 border-purple-400 rounded-lg p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">2</div>
+                  <h3 className="font-bold text-purple-900 text-lg">Invia l'Email</h3>
+                </div>
+                <p className="text-sm text-purple-800 mb-3">
+                  Manda un'email a:
+                </p>
+                <div className="bg-white p-4 rounded-lg border border-purple-300 mb-3">
+                  <a
+                    href="mailto:piero@pieropozzana.it?subject=Richiesta Report Completo - Adeguati Assetti 2086"
+                    className="text-blue-600 hover:text-blue-800 font-bold text-lg"
+                  >
+                    📧 piero@pieropozzana.it
+                  </a>
+                </div>
+                <p className="text-sm text-purple-800 mb-2">Allegando:</p>
+                <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
+                  <li><strong>Ricevuta del pagamento</strong> PayPal</li>
+                  <li><strong>File TXT</strong> con le tue risposte (scaricabile dalla sezione "Fissa un Appuntamento")</li>
+                </ul>
+              </div>
+
+              {/* STEP 3 */}
+              <div className="bg-green-50 border-2 border-green-400 rounded-lg p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">3</div>
+                  <h3 className="font-bold text-green-900 text-lg">Ricevi il Report</h3>
+                </div>
+                <p className="text-sm text-green-800">
+                  <strong>Entro 3 giorni lavorativi</strong> riceverai via email il Report Peritale Completo con:
+                </p>
+                <ul className="text-sm text-green-800 space-y-1 mt-2 list-disc list-inside">
+                  <li>Analisi dettagliata per ogni prospettiva</li>
+                  <li>Riferimenti normativi e giurisprudenziali</li>
+                  <li>Giudizio professionale motivato</li>
+                  <li>Indicazioni per la compliance</li>
+                </ul>
+              </div>
+
+              {/* PRIVACY */}
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <div className="flex items-start gap-2">
+                  <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-blue-800">
+                    <strong>Privacy garantita:</strong> I tuoi dati non verranno mai condivisi con terzi e saranno trattati
+                    nel rispetto del GDPR (Reg. UE 2016/679) esclusivamente per l'elaborazione del report.
+                  </p>
+                </div>
+              </div>
+
+              {/* PULSANTE CHIUDI */}
+              <button
+                onClick={() => setShowPremiumPopup(false)}
+                className="w-full bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-700 transition"
+              >
+                Ho Capito
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
