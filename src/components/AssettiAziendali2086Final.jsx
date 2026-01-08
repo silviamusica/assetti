@@ -1270,8 +1270,7 @@ export default function AssettiAziendali2086Final() {
           Piano di Miglioramento Personalizzato
         </h2>
         <p className="text-purple-700 mb-4">
-          Oltre al report completo, possiamo elaborare per te un <strong>Piano di Miglioramento su misura</strong>
-          che include:
+          Oltre al report completo, possiamo elaborare per te un <strong>Piano di Miglioramento su misura</strong> che include:
         </p>
         <ul className="space-y-3 mb-6">
           <li className="flex items-start gap-3 bg-red-100 p-3 rounded border-l-4 border-red-500">
