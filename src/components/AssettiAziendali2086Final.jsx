@@ -622,8 +622,8 @@ export default function AssettiAziendali2086Final() {
             <li>✓ Elaborazione ad hoc per la tua azienda</li>
             <li>✓ Modello delibera CdA/Amministratore Unico</li>
           </ul>
-          <button onClick={() => setShowConsulenzaPopup(true)} className="w-full bg-white text-purple-600 font-semibold py-3 px-4 rounded-lg hover:bg-purple-50 transition flex items-center justify-center gap-2">
-            <Phone className="w-5 h-5" />Richiedi Consulenza
+          <button onClick={() => setShowConsulenzaPopup(true)} className="w-full bg-white text-purple-600 font-semibold py-3 px-4 rounded-lg hover:bg-purple-50 transition">
+            Scopri la Consulenza
           </button>
         </div>
       </div>
