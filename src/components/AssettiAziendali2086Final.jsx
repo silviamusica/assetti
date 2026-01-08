@@ -1456,10 +1456,29 @@ export default function AssettiAziendali2086Final() {
                     📧 piero@pieropozzana.it
                   </a>
                 </div>
-                <p className="text-sm text-purple-800 mb-2">Allegando:</p>
-                <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
-                  <li><strong>Ricevuta del pagamento</strong> PayPal</li>
-                  <li><strong>File TXT</strong> con le tue risposte (scaricabile dalla sezione "Fissa un Appuntamento")</li>
+                <p className="text-sm text-purple-800 mb-2 font-semibold">Allegando:</p>
+                <ul className="text-sm text-purple-800 space-y-2 mb-4">
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span><strong>Ricevuta del pagamento</strong> PayPal</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <div className="flex-1">
+                      <span><strong>File TXT</strong> con le tue risposte</span>
+                      <button
+                        onClick={handleExportAnswers}
+                        className="mt-2 w-full bg-purple-600 text-white text-sm font-semibold py-2 px-3 rounded-lg hover:bg-purple-700 transition flex items-center justify-center gap-2"
+                      >
+                        <FileText className="w-4 h-4" />
+                        Scarica File TXT Risposte
+                      </button>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span>•</span>
+                    <span><strong>Dati per la fattura</strong> (Ragione sociale, P.IVA, Indirizzo, Codice SDI o PEC)</span>
+                  </li>
                 </ul>
               </div>
 
