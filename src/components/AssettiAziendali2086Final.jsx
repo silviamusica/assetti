@@ -374,21 +374,25 @@ export default function AssettiAziendali2086Final() {
   const handleExportAnswers = () => {
     // Crea un file di testo con domande e risposte
     let content = `QUESTIONARIO ADEGUATI ASSETTI AZIENDALI - Art. 2086 c.c.\n`;
+    content += `Azienda: ${companyData.name}\n`;
     content += `Data: ${new Date().toLocaleDateString('it-IT')}\n`;
     content += `\n${'='.repeat(80)}\n\n`;
 
     questions.forEach((q, index) => {
       const answer = answers[q.id];
       if (answer) {
-        content += `${index + 1}. ${q.text}\n`;
+        content += `DOMANDA ${index + 1}\n`;
+        content += `${q.text}\n\n`;
 
-        // Trova l'opzione selezionata
-        const selectedOption = q.options.find(opt => opt.value === answer);
+        // Trova l'opzione selezionata usando answer.value
+        const selectedOption = q.options.find(opt => opt.value === answer.value);
         if (selectedOption) {
-          content += `   Risposta: ${selectedOption.label}\n`;
+          content += `RISPOSTA:\n${selectedOption.label}\n`;
+        } else {
+          content += `RISPOSTA: ${answer.value}\n`;
         }
 
-        content += `\n`;
+        content += `\n${'-'.repeat(80)}\n\n`;
       }
     });
 
